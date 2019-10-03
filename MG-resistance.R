@@ -1,11 +1,12 @@
 # Modeling the spread of macrolide-resistance in Mycoplasma genitalium (MG)
-# Christian L. Althaus & Dominique Cadosch, 2 October 2019
+# Christian L. Althaus & Dominique Cadosch, 3 October 2019
 
 # Load libraries
 library(deSolve)
 library(bbmle)
 library(mvtnorm)
 library(plotrix)
+library(RColorBrewer)
 
 set.seed(71309)
 
@@ -134,6 +135,7 @@ for(i in 1:3) {
 }
 
 # Plot model fits (Figure 3)
+pdf("Figure2.pdf", width = 8, height = 8)
 par(mfrow = c(3, 2))
 for(i in 1:3) {
 	# Proportion resistance MG
@@ -168,10 +170,12 @@ for(i in 1:3) {
 			col = rgb(0, 0, 1, alpha = 0.2), border = NA)
 	lines(simulation$time, simulation$I_A/(simulation$I_A + simulation$I_T), col = "blue")
 }
+dev.off()
 
 # Plot resistance growth rate (Figure 4)
+pdf("Figure3.pdf", width = 7, height = 5)
 par(mfrow = c(1, 1))
-cols <- c("red", "blue", "darkgreen")
+cols <- brewer.pal(3, "Set1")
 plot(NA,
 	 xlim = c(0, 1), ylim = c(0, 0.5),
 	 xlab = "Proportion of resistant infections", ylab = expression(paste(Relative~growth~rate~of~resistant~infections~(y^-1))), frame = FALSE)
@@ -180,7 +184,8 @@ for(i in 1:3) {
 	tau <- exp(pars["tau"])
 	mu <- pars["mu"]
 	p <- seq(0.01, 1, 0.01)
-	lines(p, tau*(1 + mu*(1-p)/p), col = cols[i], lty = i)
-	abline(h = tau, col = "gray", lty = i)
+	lines(p, tau*(1 + mu*(1-p)/p), col = cols[i], lwd = 2, lty = i)
+	abline(h = tau, col = "gray", lwd = 2, lty = i)
 }
-legend("topright", inset = 0.1, countries, lty = 1:3, col = cols, bty = "n")
+legend("topright", inset = 0.1, countries, lwd = 2, lty = 1:3, col = cols, bty = "n")
+dev.off()
