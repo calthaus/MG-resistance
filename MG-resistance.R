@@ -1,5 +1,5 @@
 # Modeling the spread of macrolide-resistance in Mycoplasma genitalium (MG)
-# Christian L. Althaus & Dominique Cadosch, 3 October 2019
+# Christian L. Althaus & Dominique Cadosch, 23 October 2019
 
 # Load libraries
 library(deSolve)
@@ -185,7 +185,7 @@ for(i in 1:3) {
 	mu <- pars["mu"]
 	p <- seq(0.01, 1, 0.01)
 	lines(p, tau*(1 + mu*(1-p)/p), col = cols[i], lwd = 2, lty = i)
-	abline(h = tau, col = "gray", lwd = 2, lty = i)
+	abline(h = tau, lwd = 2, lty = i)
 }
 legend("topright", inset = 0.1, countries, lwd = 2, lty = 1:3, col = cols, bty = "n")
 dev.off()
